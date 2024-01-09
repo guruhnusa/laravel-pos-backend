@@ -31,8 +31,24 @@ class ProductController extends Controller
     //store
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|unique:products|max:255',
+            'price' => 'required|integer',
+            'stock' => 'required|integer',
+            'category' => 'required|in:food,drink,snack',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+        $filename = time() . '.' . $request->image->extension();
+        $request->image->storeAs('public/products', $filename);
         $data = $request->all();
-        Product::create($data);
+
+        $product = new Product;
+        $product->name = $request->name;
+        $product->price = (int)$request->price;
+        $product->stock = (int)$request->stock;
+        $product->category = $request->category;
+        $product->image = $filename;
+        $product->save();
         return redirect()->route('product.index')->with('success', 'Product created successfully.');
     }
 

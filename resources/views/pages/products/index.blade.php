@@ -66,8 +66,8 @@
                                             <th>Category</th>
                                             <th>Price</th>
                                             <th>Stock</th>
+                                            <th>Image</th>
                                             <th>Action</th>
-
                                         </tr>
                                         @foreach ($products as $product)
                                             <tr>
@@ -83,7 +83,15 @@
                                                 <td>
                                                     {{ $product->stock }}
                                                 </td>
+                                                <td>
+                                                    @if ($product->image)
+                                                        <img src="{{ asset('storage/products/' . $product->image) }}"
+                                                            alt="" width="100px" class="img-thumbnail">
+                                                    @else
+                                                        <span class="badge badge-danger">No Image</span>
+                                                    @endif
 
+                                                </td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
                                                         <a href='{{ route('product.edit', $product->id) }}'
